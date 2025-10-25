@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+#MISE description="Install dependencies for Tauri presentation app on Fedora"
+
 set -eou pipefail
 
 sudo dnf install webkit2gtk4.1-devel \
