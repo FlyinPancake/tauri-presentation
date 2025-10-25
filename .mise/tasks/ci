@@ -7,6 +7,6 @@ bun lint
 bun fmt:check
 
 pushd src-tauri
-cargo check
+cargo clippy -- -D warnings
 cargo fmt -- --check
 popd
