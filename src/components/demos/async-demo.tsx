@@ -27,14 +27,24 @@ export function AsyncDemo() {
       <Button
         onClick={runAsyncTask}
         disabled={isLoading}
-        className="w-full"
+        size="sm"
+        className="w-full h-9"
         variant={isLoading ? "secondary" : "default"}
       >
-        {isLoading ? "Processing..." : "Run Async Task"}
+        {isLoading ? (
+          <span className="flex items-center gap-2">
+            <span className="h-3 w-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+            Processing...
+          </span>
+        ) : (
+          "Run Async Task"
+        )}
       </Button>
-      {asyncResult && (
-        <div className="p-4 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg">
-          <p className="text-sm font-medium">{asyncResult}</p>
+      {asyncResult && !isLoading && (
+        <div className="p-3 bg-gradient-to-r from-amber-50 to-amber-100 dark:from-amber-950/50 dark:to-amber-900/50 border border-amber-200/50 dark:border-amber-800/50 rounded-lg animate-in fade-in slide-in-from-top-1 duration-300">
+          <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
+            {asyncResult}
+          </p>
         </div>
       )}
     </DemoCard>

@@ -2,7 +2,7 @@
 npm.bun = true
 
 [tasks]
-dev = { run = "bun run tauri dev", description = "Run the development server" }
+dev = { run = "bun run tauri dev", description = "Run the development server", alias = "d" }
 
 [tools]
 bun = "latest"

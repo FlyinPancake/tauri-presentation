@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 #MISE description="Build the Tauri presentation application"
+#MISE alias="bu"
 
 set -eoux pipefail
 export NO_STRIP=true

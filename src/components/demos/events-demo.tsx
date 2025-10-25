@@ -32,7 +32,7 @@ export function EventsDemo() {
       "progress-update",
       (event) => {
         setProgressUpdates((prev) => [...prev, event.payload]);
-      }
+      },
     );
 
     const unlistenComplete = listen<string>("progress-complete", (event) => {
@@ -56,50 +56,58 @@ export function EventsDemo() {
       <Button
         onClick={startProgressTask}
         disabled={isProgressRunning}
-        className="w-full"
+        size="sm"
+        className="w-full h-9"
         variant={isProgressRunning ? "secondary" : "default"}
       >
-        {isProgressRunning ? "Task Running..." : "Start Progress Task"}
+        {isProgressRunning ? (
+          <span className="flex items-center gap-2">
+            <span className="h-3 w-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+            Task Running...
+          </span>
+        ) : (
+          "Start Progress Task"
+        )}
       </Button>
 
       {progressUpdates.length > 0 && (
-        <div className="p-4 bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-800 rounded-lg space-y-2">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold">Progress Updates:</span>
-            <Badge variant="outline">
+        <div className="p-3 bg-gradient-to-r from-indigo-50 to-indigo-100 dark:from-indigo-950/50 dark:to-indigo-900/50 border border-indigo-200/50 dark:border-indigo-800/50 rounded-lg space-y-2 animate-in fade-in slide-in-from-top-1 duration-300">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-indigo-900 dark:text-indigo-100">
+              Progress:
+            </span>
+            <Badge variant="outline" className="text-xs">
               {progressUpdates[progressUpdates.length - 1]?.current || 0} /{" "}
               {progressUpdates[progressUpdates.length - 1]?.total || 10}
             </Badge>
           </div>
 
           {/* Progress Bar */}
-          {progressUpdates.length > 0 && (
-            <div className="w-full bg-indigo-200 dark:bg-indigo-900 rounded-full h-2.5">
-              <div
-                className="bg-indigo-600 h-2.5 rounded-full transition-all duration-300"
-                style={{
-                  width: `${
-                    (progressUpdates[progressUpdates.length - 1]?.current /
-                      progressUpdates[progressUpdates.length - 1]?.total) *
-                    100
-                  }%`,
-                }}
-              ></div>
-            </div>
-          )}
+          <div className="w-full bg-indigo-200 dark:bg-indigo-900/50 rounded-full h-2 overflow-hidden">
+            <div
+              className="bg-gradient-to-r from-indigo-600 to-indigo-500 h-2 rounded-full transition-all duration-300"
+              style={{
+                width: `${
+                  (progressUpdates[progressUpdates.length - 1]?.current /
+                    progressUpdates[progressUpdates.length - 1]?.total) *
+                  100
+                }%`,
+              }}
+            ></div>
+          </div>
 
           {/* Recent updates (last 5) */}
-          <div className="space-y-1 max-h-32 overflow-y-auto text-xs">
+          <div className="space-y-0.5 max-h-24 overflow-y-auto text-xs">
             {progressUpdates.slice(-5).map((update, idx) => (
-              <div key={idx} className="text-muted-foreground">
+              <div key={idx} className="text-indigo-700 dark:text-indigo-300">
                 {update.message}
               </div>
             ))}
           </div>
 
           {!isProgressRunning && progressUpdates.length > 0 && (
-            <div className="pt-2 border-t border-indigo-300 dark:border-indigo-700">
-              <p className="text-sm font-medium text-green-600 dark:text-green-400">
+            <div className="pt-2 border-t border-indigo-300/50 dark:border-indigo-700/50">
+              <p className="text-xs font-medium text-green-600 dark:text-green-400">
                 ✓ Task completed successfully!
               </p>
             </div>
