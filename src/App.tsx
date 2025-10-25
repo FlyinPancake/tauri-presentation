@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,6 +22,12 @@ interface SystemInfo {
   timestamp: number;
 }
 
+interface ProgressUpdate {
+  current: number;
+  total: number;
+  message: string;
+}
+
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
@@ -30,6 +37,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [numA, setNumA] = useState<number>(10);
   const [numB, setNumB] = useState<number>(5);
+  const [progressUpdates, setProgressUpdates] = useState<ProgressUpdate[]>([]);
+  const [isProgressRunning, setIsProgressRunning] = useState(false);
 
   async function greet() {
     setGreetMsg(await invoke("greet", { name }));
@@ -63,6 +72,38 @@ function App() {
       setIsLoading(false);
     }
   }
+
+  async function startProgressTask() {
+    setProgressUpdates([]);
+    setIsProgressRunning(true);
+    try {
+      await invoke("start_progress_task");
+    } catch (error) {
+      console.error("Failed to start progress task:", error);
+      setIsProgressRunning(false);
+    }
+  }
+
+  // Set up event listeners
+  useEffect(() => {
+    const unlistenProgress = listen<ProgressUpdate>(
+      "progress-update",
+      (event) => {
+        setProgressUpdates((prev) => [...prev, event.payload]);
+      },
+    );
+
+    const unlistenComplete = listen<string>("progress-complete", (event) => {
+      setIsProgressRunning(false);
+      console.log("Progress complete:", event.payload);
+    });
+
+    // Cleanup listeners on unmount
+    return () => {
+      unlistenProgress.then((fn) => fn());
+      unlistenComplete.then((fn) => fn());
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 py-12 px-4">
@@ -243,6 +284,72 @@ function App() {
           </CardContent>
         </Card>
 
+        {/* Demo 5: Event Listeners */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Badge variant="secondary">5</Badge>
+              Event Listeners (Rust → Frontend)
+            </CardTitle>
+            <CardDescription>
+              Real-time progress updates from Rust backend via event emission
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Button
+              onClick={startProgressTask}
+              disabled={isProgressRunning}
+              className="w-full"
+              variant={isProgressRunning ? "secondary" : "default"}
+            >
+              {isProgressRunning ? "Task Running..." : "Start Progress Task"}
+            </Button>
+
+            {progressUpdates.length > 0 && (
+              <div className="p-4 bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-800 rounded-lg space-y-2">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-semibold">
+                    Progress Updates:
+                  </span>
+                  <Badge variant="outline">
+                    {progressUpdates[progressUpdates.length - 1]?.current || 0}{" "}
+                    / {progressUpdates[progressUpdates.length - 1]?.total || 10}
+                  </Badge>
+                </div>
+
+                {/* Progress Bar */}
+                {progressUpdates.length > 0 && (
+                  <div className="w-full bg-indigo-200 dark:bg-indigo-900 rounded-full h-2.5">
+                    <div
+                      className="bg-indigo-600 h-2.5 rounded-full transition-all duration-300"
+                      style={{
+                        width: `${(progressUpdates[progressUpdates.length - 1]?.current / progressUpdates[progressUpdates.length - 1]?.total) * 100}%`,
+                      }}
+                    ></div>
+                  </div>
+                )}
+
+                {/* Recent updates (last 5) */}
+                <div className="space-y-1 max-h-32 overflow-y-auto text-xs">
+                  {progressUpdates.slice(-5).map((update, idx) => (
+                    <div key={idx} className="text-muted-foreground">
+                      {update.message}
+                    </div>
+                  ))}
+                </div>
+
+                {!isProgressRunning && progressUpdates.length > 0 && (
+                  <div className="pt-2 border-t border-indigo-300 dark:border-indigo-700">
+                    <p className="text-sm font-medium text-green-600 dark:text-green-400">
+                      ✓ Task completed successfully!
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Footer */}
         <Card>
           <CardHeader>
@@ -279,6 +386,12 @@ function App() {
                   ✓
                 </Badge>
                 <span>Native system access from Rust</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Badge variant="outline" className="mt-0.5">
+                  ✓
+                </Badge>
+                <span>Event-driven architecture with real-time updates</span>
               </li>
             </ul>
           </CardContent>
