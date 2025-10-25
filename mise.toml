@@ -9,4 +9,3 @@ bun = "latest"
 node = "latest"
 "npm:@devcontainers/cli" = "latest"
 "npm:shadcn" = "latest"
-rust = { version = "1.90", components = "rustfmt,clippy,cargo" }
