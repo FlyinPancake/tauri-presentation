@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
 import { DemoCard } from "@/components/demo-card";
+import { Plus, Minus, X, Divide } from "lucide-react";
 
 export function CalculatorDemo() {
   const [calcResult, setCalcResult] = useState<string>("");
@@ -36,6 +38,20 @@ export function CalculatorDemo() {
           placeholder="First number"
           className="flex-1"
         />
+        <ButtonGroup>
+          <Button onClick={() => calculate("add")} variant="outline">
+            <Plus />
+          </Button>
+          <Button onClick={() => calculate("subtract")} variant="outline">
+            <Minus />
+          </Button>
+          <Button onClick={() => calculate("multiply")} variant="outline">
+            <X />
+          </Button>
+          <Button onClick={() => calculate("divide")} variant="outline">
+            <Divide />
+          </Button>
+        </ButtonGroup>
         <Input
           type="number"
           value={numB}
@@ -44,20 +60,7 @@ export function CalculatorDemo() {
           className="flex-1"
         />
       </div>
-      <div className="flex flex-wrap gap-2">
-        <Button onClick={() => calculate("add")} variant="outline">
-          Add (+)
-        </Button>
-        <Button onClick={() => calculate("subtract")} variant="outline">
-          Subtract (−)
-        </Button>
-        <Button onClick={() => calculate("multiply")} variant="outline">
-          Multiply (×)
-        </Button>
-        <Button onClick={() => calculate("divide")} variant="outline">
-          Divide (÷)
-        </Button>
-      </div>
+
       <p className="text-xs text-muted-foreground">
         💡 Try dividing by zero to see error handling!
       </p>
