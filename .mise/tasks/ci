@@ -2,6 +2,7 @@
 
 set -eoux pipefail
 
+bun install
 bun lint
 bun fmt:check
 
