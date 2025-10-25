@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Build the Tauri presentation application"
+
+set -eoux pipefail
+export NO_STRIP=true
+bun run tauri build
