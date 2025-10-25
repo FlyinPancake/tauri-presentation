@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -eoux pipefail
+
+bun lint
+bun fmt:check
+
+pushd src-tauri
+cargo check
+cargo fmt -- --check
+popd
