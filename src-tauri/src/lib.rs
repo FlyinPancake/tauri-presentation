@@ -56,7 +56,6 @@ fn perform_calculation(a: i32, b: i32, operation: Operation) -> Result<i32, Stri
                 Ok(a / b)
             }
         }
-        _ => Err(format!("Unknown operation: {operation:?}")),
     }
 }
 
