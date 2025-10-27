@@ -5,6 +5,10 @@ import {
   CalculatorDemo,
   AsyncDemo,
   EventsDemo,
+  PrimeSieveDemo,
+  MonteCarloDemo,
+  DialogsDemo,
+  NotificationsDemo,
 } from "@/components/demos";
 
 function App() {
@@ -34,6 +38,10 @@ function App() {
           <CalculatorDemo />
           <AsyncDemo />
           <EventsDemo />
+          <PrimeSieveDemo />
+          <MonteCarloDemo />
+          <DialogsDemo />
+          <NotificationsDemo />
         </div>
       </main>
     </div>

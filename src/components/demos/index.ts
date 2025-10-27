@@ -3,3 +3,7 @@ export { SystemInfoDemo } from "./system-info-demo";
 export { CalculatorDemo } from "./calculator-demo";
 export { AsyncDemo } from "./async-demo";
 export { EventsDemo } from "./events-demo";
+export { PrimeSieveDemo } from "./prime-sieve-demo";
+export { MonteCarloDemo } from "./monte-carlo-demo";
+export { DialogsDemo } from "./dialogs-demo";
+export { NotificationsDemo } from "./notifications";

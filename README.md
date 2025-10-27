@@ -38,6 +38,44 @@ This demo showcases key Tauri concepts:
 - Non-blocking operations that don't freeze the UI
 - Located in: `src-tauri/src/lib.rs:54`
 
+### 5. **Event Listeners (Rust → Frontend)**
+- Real-time progress updates from Rust backend
+- Backend-to-frontend event emission
+- Demonstrates bidirectional communication
+- Listen to events with `@tauri-apps/api/event`
+- Located in: `src/components/demos/events-demo.tsx`
+
+### 6. **Prime Sieve Drag Race** 🏎️
+- Performance comparison: JavaScript vs Rust
+- Sieve of Eratosthenes algorithm implementation
+- Calculate primes up to 20 million
+- Demonstrates 20-50x speedup with Rust
+- Side-by-side execution with visual feedback
+- Located in: `src-tauri/src/commands/prime_sieve.rs`
+
+### 7. **Monte Carlo Pi Estimation** 🎲
+- **Parallel processing demonstration**
+- Calculate π using Monte Carlo simulation
+- JavaScript (single-threaded) vs Rust (multi-core with Rayon)
+- Process up to 500 million iterations
+- Demonstrates **10-20x speedup** using all CPU cores
+- Shows real parallel performance benefits
+- Located in: `src-tauri/src/commands/monte_carlo.rs`
+
+### 8. **Native Dialogs**
+- Native file picker dialogs
+- Confirmation dialogs with warning/info icons
+- Uses `@tauri-apps/plugin-dialog`
+- Fully type-safe TypeScript API
+- Located in: `src/components/demos/dialogs-demo.tsx`
+
+### 9. **Desktop Notifications**
+- Send native OS notifications
+- Permission handling for notification access
+- Uses `@tauri-apps/plugin-notification`
+- Can be triggered from JavaScript or Rust
+- Located in: `src/components/demos/notifications.tsx`
+
 ## Tech Stack
 
 **Frontend:**
@@ -51,6 +89,13 @@ This demo showcases key Tauri concepts:
 - Tauri 2.0
 - Tokio (async runtime)
 - Serde (serialization)
+- Rayon (parallel processing)
+- Rand (random number generation)
+
+**Tauri Plugins:**
+- tauri-plugin-dialog (native file/message dialogs)
+- tauri-plugin-notification (desktop notifications)
+- tauri-plugin-opener (open URLs/files)
 
 ## Running the Demo
 
@@ -134,20 +179,25 @@ Perfect for:
 2. **Fetch system info** - Complex data structures
 3. **Try calculations** - Error handling
 4. **Run async task** - Non-blocking operations
-5. **Open DevTools** - Show the React DevTools work!
-6. **Show the code** - Walk through `lib.rs` and `App.tsx`
-7. **Build the app** - Show the tiny bundle size
+5. **Start Progress Task** - See real-time events from Rust to frontend
+6. **Run the Prime Sieve Race** - Show dramatic performance difference!
+7. **Run the Monte Carlo Pi Race** - **Parallel processing across all CPU cores!** ⭐
+8. **Open file/confirm dialogs** - Show native OS dialogs
+9. **Send notifications** - Trigger native desktop notifications
+10. **Open DevTools** - Show the React DevTools work!
+11. **Show the code** - Walk through `lib.rs` and `App.tsx`
+12. **Build the app** - Show the tiny bundle size
 
 ## Additional Features to Mention
 
 - **Auto-updater** - Built-in update mechanism
-- **Plugins** - Official plugins for common tasks
+- **Plugins** - Official plugins for common tasks (demonstrated: dialogs & notifications)
 - **Mobile support** - iOS and Android (beta)
 - **System tray** - Native system tray integration
 - **Custom protocols** - Register custom URL schemes
-- **Native notifications** - Desktop notifications
-- **File dialogs** - Native file pickers
+- **Event system** - Bidirectional event emission (Rust ↔ Frontend)
 - **Clipboard access** - Read/write clipboard
+- **Window management** - Multi-window support, custom titlebar
 
 ## Resources
 
